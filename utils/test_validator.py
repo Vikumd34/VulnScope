@@ -1,4 +1,5 @@
 from utils.validator import TargetValidator
+from utils.logger import logger
 
 targets = [
     "127.0.0.1",
@@ -10,4 +11,4 @@ targets = [
 ]
 
 for target in targets:
-    print(target, "->", TargetValidator.validate(target))
+    logger.info(f"{target} -> {TargetValidator.validate(target)}")

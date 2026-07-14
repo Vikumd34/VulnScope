@@ -3,6 +3,7 @@ from routes.dashboard import dashboard_bp
 from routes.scanner import scanner_bp
 from routes.history import history_bp
 from routes.auth import auth_bp
+from routes.admin import admin_bp
 from database.database import db
 from flask_login import LoginManager
 from models.user import User
@@ -14,6 +15,7 @@ app.register_blueprint(dashboard_bp)
 app.register_blueprint(scanner_bp)
 app.register_blueprint(history_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(admin_bp)
 
 # Initialize Flask-Login
 login_manager = LoginManager()

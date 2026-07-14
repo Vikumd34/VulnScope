@@ -4,6 +4,7 @@ from models.scan_model import ScanModel
 import json
 from utils.validator import TargetValidator
 from datetime import datetime
+from utils.logger import logger
 
 engine = ScannerEngine()
 
@@ -36,7 +37,7 @@ def save_scan_record(scan_result):
         db.session.add(scan_entry)
         db.session.commit()
     except Exception as e:
-        print(f"Failed to save scan record: {e}")
+        logger.exception(f"Failed to save scan record: {e}")
         db.session.rollback()
 
 

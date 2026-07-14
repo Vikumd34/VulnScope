@@ -10,6 +10,7 @@ from database.scan_manager import ScanManager
 from models.scan_result import ScanResult
 from utils.validator import TargetValidator
 from datetime import datetime
+from utils.logger import logger
 
 class ScannerEngine:
 
@@ -26,7 +27,7 @@ class ScannerEngine:
         self.whois_scanner = WhoisScanner()
         self.scan_manager = ScanManager()
 
-        print(f"{self.name} Started")
+        logger.info(f"{self.name} Started")
 
     def get_version(self):
         return self.version
@@ -62,6 +63,7 @@ class ScannerEngine:
             return {}
 
     def run_scan(self, target):
+        logger.info(f"Starting scan for target: {target}")
         result = ScanResult()
         result.target = target
         result.scan_time = datetime.now()
@@ -112,19 +114,21 @@ class ScannerEngine:
         job.results = result.open_ports
         job.complete()
 
+        logger.info(f"Completed scan for target: {target}")
+
         return result
 
     def get_host_info(self, target):
         return self.host_info.get_host_information(target)
 
     def print_scan_results(self, target, results):
-        print("\n========== Scan Results ==========")
-        print(f"Target: {target}")
+        logger.info("========== Scan Results ==========")
+        logger.info(f"Target: {target}")
 
         if results:
             for port in results:
-                print(f"[OPEN] Port {port}")
+                logger.info(f"[OPEN] Port {port}")
         else:
-            print("No open ports found.")
+            logger.info("No open ports found.")
 
-        print("==================================")
+        logger.info("==================================")
