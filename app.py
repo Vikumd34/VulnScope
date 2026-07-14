@@ -1,6 +1,9 @@
 from flask import Flask, render_template
+from scanner.engine import ScannerEngine
 
 app = Flask(__name__)
+
+engine = ScannerEngine()
 
 @app.route("/")
 def dashboard():
