@@ -115,3 +115,11 @@ td{
     border-bottom:1px solid #333;
 
 }
+
+.error{
+    background:#7f1d1d;
+    color:white;
+    padding:12px;
+    border-radius:8px;
+    margin-top:20px;
+}
