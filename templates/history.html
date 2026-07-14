@@ -20,6 +20,7 @@
 	<td>{{ s.created_at }}</td>
 	<td>
 		<a href="/history/{{ s.id }}">View</a>
+		<a href="/report/{{ s.id }}" target="_blank">Generate Report</a>
 		<form method="POST" action="/history/delete/{{ s.id }}" style="display:inline">
 			<button type="submit">Delete</button>
 		</form>

@@ -123,3 +123,17 @@ td{
     border-radius:8px;
     margin-top:20px;
 }
+
+/* Print-friendly styles for reports */
+@media print {
+    body { background: white; color: black; margin: 10px; }
+    .main-nav { display: none; }
+    .card, li { background: white; color: black; }
+    table { border: 1px solid #000; }
+    th, td { border: 1px solid #000; }
+    button { display: none; }
+}
+
+/* Report table styling */
+.report-table td, .report-table th { border: 1px solid #ddd; padding: 8px; }
+.report-container { background: white; color: black; padding: 20px; border-radius: 6px; }
