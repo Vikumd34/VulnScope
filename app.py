@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask
+from routes.dashboard import dashboard_bp
 from routes.scanner import scanner_bp
 
 app = Flask(__name__)
+app.register_blueprint(dashboard_bp)
 app.register_blueprint(scanner_bp)
 
 @app.route("/")

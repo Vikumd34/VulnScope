@@ -1,4 +1,4 @@
-from database.scan_job import ScanJob
+from models.scan_job import ScanJob
 
 
 class ScanManager:

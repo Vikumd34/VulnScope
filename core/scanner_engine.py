@@ -1,6 +1,7 @@
-from scanner.port_scanner import PortScanner
-from scanner.service_detector import ServiceDetector
-from scanner.host_info import HostInfo
+from services.port_scanner import PortScanner
+from services.service_detector import ServiceDetector
+from services.host_info import HostInfo
+from services.dns_scanner import DNSScanner
 from database.scan_manager import ScanManager
 
 class ScannerEngine:
@@ -11,6 +12,7 @@ class ScannerEngine:
         self.port_scanner = PortScanner()
         self.service_detector = ServiceDetector()
         self.host_info = HostInfo()
+        self.dns_scanner = DNSScanner()
         self.scan_manager = ScanManager()
 
         print(f"{self.name} Started")
@@ -35,6 +37,12 @@ class ScannerEngine:
 
     def create_scan(self, target):
         return self.scan_manager.create_job(target)
+
+    def dns_lookup(self, target):
+        try:
+            return self.dns_scanner.get_records(target)
+        except Exception:
+            return {}
 
     def get_host_info(self, target):
         return self.host_info.get_host_information(target)

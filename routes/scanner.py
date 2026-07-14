@@ -1,10 +1,7 @@
 from flask import Blueprint, render_template, request
-from scanner.engine import ScannerEngine
-from utils.validator import TargetValidator
+from controllers.scanner_controller import scan_target
 
 scanner_bp = Blueprint("scanner", __name__)
-
-engine = ScannerEngine()
 
 
 @scanner_bp.route("/scan", methods=["GET", "POST"])
@@ -19,20 +16,13 @@ def scan():
     if request.method == "POST":
 
         target = request.form["target"].strip()
+        scan_data = scan_target(target)
 
-        if TargetValidator.validate(target):
-            job = engine.create_scan(target)
-            job.start()
-
-            host = engine.get_host_info(target)
-            ports = engine.port_scan(target)
-            results = engine.detect_services(ports)
-
-            job.results = results
-            job.complete()
-        else:
-            results = []
-            error = "Invalid IP address or hostname."
+        target = scan_data["target"]
+        host = scan_data["host"]
+        results = scan_data["results"]
+        job = scan_data["job"]
+        error = scan_data["error"]
 
     return render_template(
         "scanner.html",
