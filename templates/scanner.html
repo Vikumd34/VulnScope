@@ -28,6 +28,40 @@
 </div>
 {% endif %}
 
+{% if host %}
+
+<h2>Host Information</h2>
+
+<table>
+
+<tr>
+
+<td>Target</td>
+
+<td>{{ host.target }}</td>
+
+</tr>
+
+<tr>
+
+<td>IP Address</td>
+
+<td>{{ host.ip }}</td>
+
+</tr>
+
+<tr>
+
+<td>Hostname</td>
+
+<td>{{ host.hostname }}</td>
+
+</tr>
+
+</table>
+
+{% endif %}
+
 {% if results is not none %}
 
 <h2>Results for {{ target }}</h2>

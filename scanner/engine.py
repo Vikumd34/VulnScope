@@ -1,5 +1,6 @@
 from scanner.port_scanner import PortScanner
 from scanner.service_detector import ServiceDetector
+from scanner.host_info import HostInfo
 
 class ScannerEngine:
 
@@ -8,6 +9,7 @@ class ScannerEngine:
         self.name = "VulnScope Scanner Engine"
         self.port_scanner = PortScanner()
         self.service_detector = ServiceDetector()
+        self.host_info = HostInfo()
 
         print(f"{self.name} Started")
 
@@ -28,6 +30,9 @@ class ScannerEngine:
             })
 
         return results
+
+    def get_host_info(self, target):
+        return self.host_info.get_host_information(target)
 
     def print_scan_results(self, target, results):
         print("\n========== Scan Results ==========")

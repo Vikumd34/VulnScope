@@ -19,15 +19,18 @@ def scan():
         target = request.form["target"].strip()
 
         if TargetValidator.validate(target):
+            host = engine.get_host_info(target)
             ports = engine.port_scan(target)
             results = engine.detect_services(ports)
         else:
             results = []
+            host = None
             error = "Invalid IP address or hostname."
 
     return render_template(
         "scanner.html",
-        results=results,
         target=target,
+        host=host,
+        results=results,
         error=error
     )
