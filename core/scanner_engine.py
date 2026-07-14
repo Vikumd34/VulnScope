@@ -5,6 +5,7 @@ from services.dns_scanner import DNSScanner
 from services.whois_scanner import WhoisScanner
 from services.http_scanner import HTTPScanner
 from services.security_headers import SecurityHeaderAnalyzer
+from services.ssl_scanner import SSLScanner
 from database.scan_manager import ScanManager
 from models.scan_result import ScanResult
 from utils.validator import TargetValidator
@@ -21,6 +22,7 @@ class ScannerEngine:
         self.dns_scanner = DNSScanner()
         self.http_scanner = HTTPScanner()
         self.security_analyzer = SecurityHeaderAnalyzer()
+        self.ssl_scanner = SSLScanner()
         self.whois_scanner = WhoisScanner()
         self.scan_manager = ScanManager()
 
@@ -100,6 +102,12 @@ class ScannerEngine:
             result.security_headers = self.security_analyzer.analyze(headers or {})
         except Exception:
             result.security_headers = {}
+
+        # SSL/TLS scan
+        try:
+            result.ssl = self.ssl_scanner.scan(target)
+        except Exception:
+            result.ssl = {}
 
         job.results = result.open_ports
         job.complete()

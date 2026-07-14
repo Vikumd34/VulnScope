@@ -186,4 +186,24 @@
 
 {% endif %}
 
+{% if scan_result.ssl %}
+
+<h2>SSL/TLS Information</h2>
+
+{% if scan_result.ssl.available %}
+<table>
+<tr><td>TLS Version</td><td>{{ scan_result.ssl.tls_version or 'N/A' }}</td></tr>
+<tr><td>Certificate Status</td><td>{{ scan_result.ssl.certificate_status or 'N/A' }}</td></tr>
+<tr><td>Issuer</td><td>{{ scan_result.ssl.issuer or 'N/A' }}</td></tr>
+<tr><td>Subject</td><td>{{ scan_result.ssl.subject or 'N/A' }}</td></tr>
+<tr><td>Valid From</td><td>{{ scan_result.ssl.not_before or 'N/A' }}</td></tr>
+<tr><td>Expires On</td><td>{{ scan_result.ssl.not_after or 'N/A' }}</td></tr>
+<tr><td>Days Remaining</td><td>{{ scan_result.ssl.days_remaining if scan_result.ssl.days_remaining is not none else 'N/A' }}</td></tr>
+</table>
+{% else %}
+<p>SSL/TLS not detected. {{ scan_result.ssl.error if scan_result.ssl.error }}</p>
+{% endif %}
+
+{% endif %}
+
 {% endblock %}

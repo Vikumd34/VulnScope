@@ -12,3 +12,4 @@ class ScanResult:
         self.error = None
         self.http = {}
         self.security_headers = {}
+        self.ssl = {}
