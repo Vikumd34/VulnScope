@@ -7,11 +7,13 @@ from datetime import datetime
 from reports.pdf_report import PDFReportGenerator
 from flask import make_response
 import io
+from flask_login import login_required
 
 history_bp = Blueprint('history', __name__)
 
 
 @history_bp.route('/history')
+@login_required
 def history():
     q = request.args.get('q', '').strip()
     if q:
@@ -24,6 +26,7 @@ def history():
 
 
 @history_bp.route('/history/<int:scan_id>')
+@login_required
 def history_detail(scan_id):
     scan = ScanModel.query.get_or_404(scan_id)
     data = {}
@@ -36,6 +39,7 @@ def history_detail(scan_id):
 
 
 @history_bp.route('/history/delete/<int:scan_id>', methods=['POST'])
+@login_required
 def delete_scan(scan_id):
     scan = ScanModel.query.get(scan_id)
     if not scan:
@@ -54,6 +58,7 @@ def delete_scan(scan_id):
 
 
 @history_bp.route('/report/<int:scan_id>')
+@login_required
 def generate_report(scan_id):
     scan = ScanModel.query.get_or_404(scan_id)
     data = {}
@@ -88,6 +93,7 @@ def generate_report(scan_id):
 
 
 @history_bp.route('/report/pdf/<int:scan_id>')
+@login_required
 def generate_pdf(scan_id):
     scan = ScanModel.query.get_or_404(scan_id)
     data = {}
