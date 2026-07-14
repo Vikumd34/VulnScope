@@ -15,6 +15,10 @@
     <button type="submit">
 
         Scan
+    <button type="submit" name="action" value="port">Port Scan</button>
+    <button type="submit" name="action" value="dns">DNS Scan</button>
+    <button type="submit" name="action" value="whois">WHOIS Scan</button>
+
 
     </button>
 
@@ -78,6 +82,23 @@
 <td>{{ host.hostname }}</td>
 
 </tr>
+
+</table>
+
+{% endif %}
+
+{% if whois %}
+
+<h2>WHOIS</h2>
+
+<table>
+
+<tr><td>Domain</td><td>{{ whois.domain_name or 'N/A' }}</td></tr>
+<tr><td>Registrar</td><td>{{ whois.registrar or 'N/A' }}</td></tr>
+<tr><td>Created</td><td>{{ whois.creation_date or 'N/A' }}</td></tr>
+<tr><td>Expires</td><td>{{ whois.expiration_date or 'N/A' }}</td></tr>
+<tr><td>Updated</td><td>{{ whois.updated_date or 'N/A' }}</td></tr>
+<tr><td>Name Servers</td><td>{% if whois.name_servers %}{{ whois.name_servers|join(', ') }}{% else %}N/A{% endif %}</td></tr>
 
 </table>
 

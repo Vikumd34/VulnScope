@@ -2,6 +2,7 @@ from services.port_scanner import PortScanner
 from services.service_detector import ServiceDetector
 from services.host_info import HostInfo
 from services.dns_scanner import DNSScanner
+from services.whois_scanner import WhoisScanner
 from database.scan_manager import ScanManager
 
 class ScannerEngine:
@@ -13,6 +14,7 @@ class ScannerEngine:
         self.service_detector = ServiceDetector()
         self.host_info = HostInfo()
         self.dns_scanner = DNSScanner()
+        self.whois_scanner = WhoisScanner()
         self.scan_manager = ScanManager()
 
         print(f"{self.name} Started")
@@ -41,6 +43,12 @@ class ScannerEngine:
     def dns_lookup(self, target):
         try:
             return self.dns_scanner.get_records(target)
+        except Exception:
+            return {}
+
+    def whois_scan(self, target):
+        try:
+            return self.whois_scanner.scan(target)
         except Exception:
             return {}
 

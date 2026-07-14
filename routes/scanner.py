@@ -16,13 +16,16 @@ def scan():
     if request.method == "POST":
 
         target = request.form["target"].strip()
-        scan_data = scan_target(target)
+        action = request.form.get('action')
+        scan_data = scan_target(target, action)
 
         target = scan_data["target"]
         host = scan_data["host"]
         results = scan_data["results"]
         job = scan_data["job"]
         error = scan_data["error"]
+        dns = scan_data.get("dns")
+        whois = scan_data.get("whois")
 
     return render_template(
         "scanner.html",
@@ -30,5 +33,7 @@ def scan():
         host=host,
         job=job,
         results=results,
+        dns=dns if 'dns' in locals() else None,
+        whois=whois if 'whois' in locals() else None,
         error=error
     )
