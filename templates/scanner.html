@@ -11,16 +11,10 @@
         name="target"
         placeholder="Enter IP or Domain"
         required>
-
-    <button type="submit">
-
-        Scan
+    <button type="submit" name="action" value="all">Run Full Scan</button>
     <button type="submit" name="action" value="port">Port Scan</button>
     <button type="submit" name="action" value="dns">DNS Scan</button>
     <button type="submit" name="action" value="whois">WHOIS Scan</button>
-
-
-    </button>
 
 </form>
 
@@ -30,6 +24,14 @@
 <div class="error">
     {{ error }}
 </div>
+{% endif %}
+
+{% if scan_result %}
+    {% set host = scan_result.host_info %}
+    {% set dns = scan_result.dns %}
+    {% set whois = scan_result.whois %}
+    {% set results = scan_result.open_ports %}
+    {% set job = scan_result.job %}
 {% endif %}
 
 {% if dns %}

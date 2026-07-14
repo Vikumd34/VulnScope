@@ -19,17 +19,20 @@ def scan():
         action = request.form.get('action')
         scan_data = scan_target(target, action)
 
-        target = scan_data["target"]
-        host = scan_data["host"]
-        results = scan_data["results"]
-        job = scan_data["job"]
-        error = scan_data["error"]
+        target = scan_data.get("target")
+        scan_result = scan_data.get("scan_result")
+        # fallback to legacy keys
+        host = scan_data.get("host")
+        results = scan_data.get("results")
+        job = scan_data.get("job")
+        error = scan_data.get("error")
         dns = scan_data.get("dns")
         whois = scan_data.get("whois")
 
     return render_template(
         "scanner.html",
         target=target,
+        scan_result=scan_result if 'scan_result' in locals() else None,
         host=host,
         job=job,
         results=results,

@@ -4,6 +4,9 @@ from services.host_info import HostInfo
 from services.dns_scanner import DNSScanner
 from services.whois_scanner import WhoisScanner
 from database.scan_manager import ScanManager
+from models.scan_result import ScanResult
+from utils.validator import TargetValidator
+from datetime import datetime
 
 class ScannerEngine:
 
@@ -51,6 +54,40 @@ class ScannerEngine:
             return self.whois_scanner.scan(target)
         except Exception:
             return {}
+
+    def run_scan(self, target):
+        result = ScanResult()
+        result.target = target
+        result.scan_time = datetime.now()
+
+        # Validate
+        if not TargetValidator.validate(target):
+            result.error = "Invalid IP address or hostname."
+            return result
+
+        # Create job
+        job = self.create_scan(target)
+        result.job = job
+        job.start()
+
+        # Host info
+        result.host_info = self.get_host_info(target)
+
+        # DNS
+        result.dns = self.dns_lookup(target)
+
+        # WHOIS
+        result.whois = self.whois_scan(target)
+
+        # Port scan
+        ports = self.port_scan(target)
+        # ports is list of ints; detect services
+        result.open_ports = self.detect_services(ports)
+
+        job.results = result.open_ports
+        job.complete()
+
+        return result
 
     def get_host_info(self, target):
         return self.host_info.get_host_information(target)
