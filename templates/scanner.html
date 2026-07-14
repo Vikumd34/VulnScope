@@ -28,15 +28,29 @@
 
 {% if results %}
 
-<ul>
+<table>
+
+<tr>
+
+<th>Port</th>
+
+<th>Service</th>
+
+</tr>
 
 {% for port in results %}
 
-<li>Open Port: {{ port }}</li>
+<tr>
+
+<td>{{ port.port }}</td>
+
+<td>{{ port.service }}</td>
+
+</tr>
 
 {% endfor %}
 
-</ul>
+</table>
 
 {% else %}
 

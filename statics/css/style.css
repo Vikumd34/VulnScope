@@ -89,3 +89,29 @@ li{
     border-radius:6px;
 
 }
+
+table{
+
+    width:100%;
+
+    margin-top:20px;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#2563eb;
+
+    padding:10px;
+
+}
+
+td{
+
+    padding:10px;
+
+    border-bottom:1px solid #333;
+
+}

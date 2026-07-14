@@ -16,7 +16,8 @@ def scan():
 
         target = request.form["target"]
 
-        results = engine.port_scan(target)
+        ports = engine.port_scan(target)
+        results = engine.detect_services(ports)
 
     return render_template(
         "scanner.html",
