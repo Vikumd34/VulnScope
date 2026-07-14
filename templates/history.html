@@ -4,6 +4,31 @@
 
 <h1>Scan History</h1>
 
-<p>This page will list completed scan jobs and their status.</p>
+<form method="GET">
+	<input type="text" name="q" placeholder="Search Target" value="{{ query }}">
+	<button type="submit">Search</button>
+</form>
+
+{% if scans and scans|length > 0 %}
+<table>
+<tr><th>ID</th><th>Target</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+{% for s in scans %}
+<tr>
+	<td>{{ s.id }}</td>
+	<td>{{ s.target }}</td>
+	<td>{{ s.status }}</td>
+	<td>{{ s.created_at }}</td>
+	<td>
+		<a href="/history/{{ s.id }}">View</a>
+		<form method="POST" action="/history/delete/{{ s.id }}" style="display:inline">
+			<button type="submit">Delete</button>
+		</form>
+	</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No scans have been recorded yet.</p>
+{% endif %}
 
 {% endblock %}

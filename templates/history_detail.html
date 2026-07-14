@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Scan Detail - {{ scan.target }} (ID: {{ scan.id }})</h1>
+
+<p>Status: {{ scan.status }}</p>
+<p>Created: {{ scan.created_at }}</p>
+<p>Completed: {{ scan.completed_at }}</p>
+
+<h2>Host Information</h2>
+{% if data.host_info %}
+<table>
+<tr><td>Target</td><td>{{ data.host_info.target }}</td></tr>
+<tr><td>IP</td><td>{{ data.host_info.ip }}</td></tr>
+<tr><td>Hostname</td><td>{{ data.host_info.hostname }}</td></tr>
+</table>
+{% else %}
+<p>No host information.</p>
+{% endif %}
+
+<h2>DNS</h2>
+{% if data.dns %}
+<ul>
+{% for k,v in data.dns.items() %}
+    <li><strong>{{ k }}</strong>: {{ v }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No DNS data.</p>
+{% endif %}
+
+<h2>WHOIS</h2>
+{% if data.whois %}
+<pre>{{ data.whois }}</pre>
+{% else %}
+<p>No WHOIS data.</p>
+{% endif %}
+
+<h2>HTTP</h2>
+{% if data.http %}
+<table>
+<tr><td>Final URL</td><td>{{ data.http.final_url or 'N/A' }}</td></tr>
+<tr><td>Status</td><td>{{ data.http.status_code or 'N/A' }}</td></tr>
+</table>
+{% else %}
+<p>No HTTP data.</p>
+{% endif %}
+
+<h2>Security Headers</h2>
+{% if data.security_headers %}
+<ul>
+{% for h,p in data.security_headers.items() %}
+    <li>{{ h }}: {{ 'Present' if p else 'Missing' }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No security header data.</p>
+{% endif %}
+
+<h2>SSL</h2>
+{% if data.ssl %}
+<table>
+<tr><td>TLS Version</td><td>{{ data.ssl.tls_version }}</td></tr>
+<tr><td>Certificate Status</td><td>{{ data.ssl.certificate_status }}</td></tr>
+<tr><td>Issuer</td><td>{{ data.ssl.issuer }}</td></tr>
+<tr><td>Expires On</td><td>{{ data.ssl.not_after }}</td></tr>
+</table>
+{% else %}
+<p>No SSL data.</p>
+{% endif %}
+
+<h2>Open Ports</h2>
+{% if data.open_ports %}
+<table>
+<tr><th>Port</th><th>Service</th></tr>
+{% for p in data.open_ports %}
+<tr><td>{{ p.port }}</td><td>{{ p.service }}</td></tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No open ports recorded.</p>
+{% endif %}
+
+{% endblock %}

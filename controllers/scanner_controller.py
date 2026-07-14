@@ -1,6 +1,7 @@
 from core.scanner_engine import ScannerEngine
 from database.database import db
 from models.scan_model import ScanModel
+import json
 from utils.validator import TargetValidator
 from datetime import datetime
 
@@ -12,11 +13,25 @@ def save_scan_record(scan_result):
         return
 
     try:
+        # Serialize relevant scan_result fields to JSON for later viewing
+        payload = {
+            'target': scan_result.target,
+            'host_info': getattr(scan_result, 'host_info', {}),
+            'dns': getattr(scan_result, 'dns', {}),
+            'whois': getattr(scan_result, 'whois', {}),
+            'open_ports': getattr(scan_result, 'open_ports', []),
+            'http': getattr(scan_result, 'http', {}),
+            'security_headers': getattr(scan_result, 'security_headers', {}),
+            'ssl': getattr(scan_result, 'ssl', {}),
+            'scan_time': scan_result.scan_time.isoformat() if getattr(scan_result, 'scan_time', None) else None,
+        }
+
         scan_entry = ScanModel(
             target=scan_result.target,
             status=scan_result.job.status,
             created_at=scan_result.job.created,
             completed_at=scan_result.job.finished,
+            data=json.dumps(payload)
         )
         db.session.add(scan_entry)
         db.session.commit()
