@@ -11,8 +11,10 @@ idna==3.18
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
+pillow==12.3.0
 python-dateutil==2.9.0.post0
 python-whois==0.9.6
+reportlab==5.0.0
 requests==2.34.2
 six==1.17.0
 SQLAlchemy==2.0.51
