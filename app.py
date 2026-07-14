@@ -4,6 +4,7 @@ from scanner.engine import ScannerEngine
 app = Flask(__name__)
 
 engine = ScannerEngine()
+print(engine.get_version())
 
 @app.route("/")
 def dashboard():
