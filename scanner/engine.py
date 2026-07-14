@@ -1,6 +1,7 @@
 from scanner.port_scanner import PortScanner
 from scanner.service_detector import ServiceDetector
 from scanner.host_info import HostInfo
+from database.scan_manager import ScanManager
 
 class ScannerEngine:
 
@@ -10,6 +11,7 @@ class ScannerEngine:
         self.port_scanner = PortScanner()
         self.service_detector = ServiceDetector()
         self.host_info = HostInfo()
+        self.scan_manager = ScanManager()
 
         print(f"{self.name} Started")
 
@@ -30,6 +32,9 @@ class ScannerEngine:
             })
 
         return results
+
+    def create_scan(self, target):
+        return self.scan_manager.create_job(target)
 
     def get_host_info(self, target):
         return self.host_info.get_host_information(target)

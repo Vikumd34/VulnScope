@@ -64,6 +64,13 @@
 
 {% if results is not none %}
 
+{% if job %}
+
+<h3>Status</h3>
+<p>{{ job.status }}</p>
+
+{% endif %}
+
 <h2>Results for {{ target }}</h2>
 
 {% if results %}
