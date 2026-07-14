@@ -4,6 +4,7 @@ from services.host_info import HostInfo
 from services.dns_scanner import DNSScanner
 from services.whois_scanner import WhoisScanner
 from services.http_scanner import HTTPScanner
+from services.security_headers import SecurityHeaderAnalyzer
 from database.scan_manager import ScanManager
 from models.scan_result import ScanResult
 from utils.validator import TargetValidator
@@ -19,6 +20,7 @@ class ScannerEngine:
         self.host_info = HostInfo()
         self.dns_scanner = DNSScanner()
         self.http_scanner = HTTPScanner()
+        self.security_analyzer = SecurityHeaderAnalyzer()
         self.whois_scanner = WhoisScanner()
         self.scan_manager = ScanManager()
 
@@ -91,6 +93,13 @@ class ScannerEngine:
             result.http = self.http_scanner.scan(target)
         except Exception:
             result.http = {}
+
+        # Analyze security headers if available
+        try:
+            headers = result.http.get('headers') if result.http else {}
+            result.security_headers = self.security_analyzer.analyze(headers or {})
+        except Exception:
+            result.security_headers = {}
 
         job.results = result.open_ports
         job.complete()

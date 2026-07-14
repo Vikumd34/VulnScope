@@ -11,3 +11,4 @@ class ScanResult:
         self.job = None
         self.error = None
         self.http = {}
+        self.security_headers = {}

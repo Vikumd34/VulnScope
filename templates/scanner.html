@@ -170,4 +170,20 @@
 
 {% endif %}
 
+{% if scan_result.security_headers %}
+
+<h2>Security Headers</h2>
+
+<table>
+<tr><th>Header</th><th>Status</th></tr>
+{% for h, present in scan_result.security_headers.items() %}
+<tr>
+    <td>{{ h }}</td>
+    <td>{{ '✅ Present' if present else '⚠️ Missing' }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endif %}
+
 {% endblock %}
