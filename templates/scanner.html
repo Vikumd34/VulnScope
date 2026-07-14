@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Port Scanner</h1>
+
+<form method="POST">
+
+    <input
+        type="text"
+        name="target"
+        placeholder="Enter IP or Domain"
+        required>
+
+    <button type="submit">
+
+        Scan
+
+    </button>
+
+</form>
+
+<hr>
+
+{% if results is not none %}
+
+<h2>Results for {{ target }}</h2>
+
+{% if results %}
+
+<ul>
+
+{% for port in results %}
+
+<li>Open Port: {{ port }}</li>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No open ports found.</p>
+
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
