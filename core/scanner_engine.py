@@ -3,6 +3,7 @@ from services.service_detector import ServiceDetector
 from services.host_info import HostInfo
 from services.dns_scanner import DNSScanner
 from services.whois_scanner import WhoisScanner
+from services.http_scanner import HTTPScanner
 from database.scan_manager import ScanManager
 from models.scan_result import ScanResult
 from utils.validator import TargetValidator
@@ -17,6 +18,7 @@ class ScannerEngine:
         self.service_detector = ServiceDetector()
         self.host_info = HostInfo()
         self.dns_scanner = DNSScanner()
+        self.http_scanner = HTTPScanner()
         self.whois_scanner = WhoisScanner()
         self.scan_manager = ScanManager()
 
@@ -83,6 +85,12 @@ class ScannerEngine:
         ports = self.port_scan(target)
         # ports is list of ints; detect services
         result.open_ports = self.detect_services(ports)
+
+        # HTTP scan
+        try:
+            result.http = self.http_scanner.scan(target)
+        except Exception:
+            result.http = {}
 
         job.results = result.open_ports
         job.complete()

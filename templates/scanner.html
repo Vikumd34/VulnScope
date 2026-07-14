@@ -32,6 +32,7 @@
     {% set whois = scan_result.whois %}
     {% set results = scan_result.open_ports %}
     {% set job = scan_result.job %}
+    {% set http = scan_result.http %}
 {% endif %}
 
 {% if dns %}
@@ -84,6 +85,24 @@
 <td>{{ host.hostname }}</td>
 
 </tr>
+
+</table>
+
+{% endif %}
+
+{% if http %}
+
+<h2>HTTP Information</h2>
+
+<table>
+
+<tr><td>Final URL</td><td>{{ http.final_url or 'N/A' }}</td></tr>
+<tr><td>Status Code</td><td>{{ http.status_code or 'N/A' }}</td></tr>
+<tr><td>Response Time (s)</td><td>{{ http.elapsed or 'N/A' }}</td></tr>
+<tr><td>Redirected</td><td>{{ 'Yes' if http.redirected else 'No' }}</td></tr>
+<tr><td>Server</td><td>{{ http.headers.get('Server') if http.headers else 'N/A' }}</td></tr>
+<tr><td>Content-Type</td><td>{{ http.headers.get('Content-Type') if http.headers else 'N/A' }}</td></tr>
+<tr><td>Content-Length</td><td>{{ http.headers.get('Content-Length') if http.headers else 'N/A' }}</td></tr>
 
 </table>
 

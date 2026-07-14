@@ -10,3 +10,4 @@ class ScanResult:
         self.scan_time = None
         self.job = None
         self.error = None
+        self.http = {}
