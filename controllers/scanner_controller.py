@@ -1,7 +1,28 @@
 from core.scanner_engine import ScannerEngine
+from database.database import db
+from models.scan_model import ScanModel
 from utils.validator import TargetValidator
+from datetime import datetime
 
 engine = ScannerEngine()
+
+
+def save_scan_record(scan_result):
+    if not scan_result or not scan_result.job:
+        return
+
+    try:
+        scan_entry = ScanModel(
+            target=scan_result.target,
+            status=scan_result.job.status,
+            created_at=scan_result.job.created,
+            completed_at=scan_result.job.finished,
+        )
+        db.session.add(scan_entry)
+        db.session.commit()
+    except Exception as e:
+        print(f"Failed to save scan record: {e}")
+        db.session.rollback()
 
 
 def scan_target(target, action=None):
@@ -24,6 +45,7 @@ def scan_target(target, action=None):
     if action in (None, 'all', 'scan'):
         if TargetValidator.validate(target):
             scan_result = engine.run_scan(target)
+            save_scan_record(scan_result)
             return {
                 "target": target,
                 "scan_result": scan_result,

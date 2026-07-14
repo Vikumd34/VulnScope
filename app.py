@@ -1,10 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 from routes.dashboard import dashboard_bp
 from routes.scanner import scanner_bp
+from database.database import db
 
 app = Flask(__name__)
+app.config.from_object("config")
+db.init_app(app)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(scanner_bp)
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def dashboard():
