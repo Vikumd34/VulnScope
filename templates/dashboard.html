@@ -10,17 +10,22 @@
 
     <div class="card">
         <h2>Total Scans</h2>
-        <h1>0</h1>
+        <h1>{{ stats.total_scans }}</h1>
     </div>
 
     <div class="card">
-        <h2>Vulnerabilities</h2>
-        <h1>0</h1>
+        <h2>Completed</h2>
+        <h1>{{ stats.completed_scans }}</h1>
     </div>
 
     <div class="card">
-        <h2>Reports</h2>
-        <h1>0</h1>
+        <h2>Failed</h2>
+        <h1>{{ stats.failed_scans }}</h1>
+    </div>
+
+    <div class="card">
+        <h2>Unique Targets</h2>
+        <h1>{{ stats.unique_targets }}</h1>
     </div>
 
 </div>
@@ -38,7 +43,50 @@
 <hr>
 
 <h2>Recent Activity</h2>
-
+{% if stats.recent_scans and stats.recent_scans|length > 0 %}
+<table>
+<tr><th>Target</th><th>Status</th><th>Date</th></tr>
+{% for s in stats.recent_scans %}
+<tr>
+    <td><a href="/history/{{ s.id }}">{{ s.target }}</a></td>
+    <td>{{ s.status }}</td>
+    <td>{{ s.created_at }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
 <p>No scans performed yet.</p>
+{% endif %}
+
+<hr>
+
+<h2>Risk Distribution</h2>
+<canvas id="riskChart" width="400" height="200"></canvas>
+
+<h2>Scans Per Day</h2>
+<canvas id="dailyChart" width="600" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const riskData = {{ stats.risk_distribution | tojson }};
+const riskCtx = document.getElementById('riskChart').getContext('2d');
+new Chart(riskCtx, {
+    type: 'doughnut',
+    data: {
+        labels: Object.keys(riskData),
+        datasets: [{ data: Object.values(riskData), backgroundColor: ['#10B981', '#F59E0B', '#EF4444'] }]
+    }
+});
+
+const dailyData = {{ stats.scans_per_day | tojson }};
+const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+new Chart(dailyCtx, {
+    type: 'bar',
+    data: {
+        labels: Object.keys(dailyData),
+        datasets: [{ label: 'Scans', data: Object.values(dailyData), backgroundColor: '#2563eb' }]
+    }
+});
+</script>
 
 {% endblock %}
